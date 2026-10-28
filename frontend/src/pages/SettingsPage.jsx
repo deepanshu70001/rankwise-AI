@@ -1,0 +1,24 @@
+import React, { useState } from "react";
+import { Bell, Building2, Check, ChevronRight, KeyRound, LockKeyhole, ShieldCheck, UserRound } from "lucide-react";
+
+export default function SettingsPage() {
+  const [workspace, setWorkspace] = useState("My workspace");
+  const [emailUpdates, setEmailUpdates] = useState(true);
+  const [saved, setSaved] = useState(false);
+  const userEmail = sessionStorage.getItem("rankwise_demo_user") || "demo@rankwise.ai";
+  return (
+    <div className="page-wrap settings-page">
+      <div className="page-heading-row"><div><span className="section-kicker">PREFERENCES</span><h1>Settings</h1><p>Manage your workspace preferences and product configuration.</p></div><button className="button button-primary" onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2500); }}>{saved ? <Check size={16} /> : null}{saved ? "Saved locally" : "Save changes"}</button></div>
+      <div className="demo-banner"><span className="demo-banner-icon"><LockKeyhole size={17} /></span><div><strong>Local demo settings</strong><p>Changes are held in this page only. Connect a backend to securely persist account settings.</p></div></div>
+      <div className="settings-layout">
+        <aside className="settings-menu panel"><a className="settings-menu-item selected" href="#workspace"><Building2 size={17} /> Workspace <ChevronRight size={15} /></a><a className="settings-menu-item" href="#profile"><UserRound size={17} /> Profile <ChevronRight size={15} /></a><a className="settings-menu-item" href="#notifications"><Bell size={17} /> Notifications <ChevronRight size={15} /></a><a className="settings-menu-item" href="#security"><ShieldCheck size={17} /> Security <ChevronRight size={15} /></a></aside>
+        <div className="settings-content">
+          <section className="panel settings-card" id="workspace"><div className="settings-section-title"><span className="settings-section-icon"><Building2 size={18} /></span><div><h2>Workspace details</h2><p>Update how your workspace appears across RankWise.</p></div></div><label className="field-label" htmlFor="workspace-name">Workspace name</label><input className="standard-input" id="workspace-name" value={workspace} onChange={e => setWorkspace(e.target.value)} /><label className="field-label" htmlFor="workspace-plan">Current plan</label><div className="plan-field"><div><strong>Free early-access plan</strong><small>Demo configuration</small></div><span className="status-pill status-good">Active</span></div></section>
+          <section className="panel settings-card" id="profile"><div className="settings-section-title"><span className="settings-section-icon"><UserRound size={18} /></span><div><h2>Profile</h2><p>Profile data shown in this prototype.</p></div></div><label className="field-label" htmlFor="profile-email">Email address</label><input className="standard-input disabled-input" id="profile-email" value={userEmail} disabled /><p className="field-help">Profile editing will be available after real authentication is implemented.</p></section>
+          <section className="panel settings-card" id="notifications"><div className="settings-section-title"><span className="settings-section-icon"><Bell size={18} /></span><div><h2>Notifications</h2><p>Choose which product updates you would like to receive.</p></div></div><div className="setting-toggle-row"><div><strong>Product and audit updates</strong><p>Receive updates when reports or scans are ready.</p></div><button className={`toggle-switch ${emailUpdates ? "on" : ""}`} role="switch" aria-checked={emailUpdates} onClick={() => setEmailUpdates(v => !v)}><span /></button></div><p className="field-help">This preference is visual only; no emails are sent by the prototype.</p></section>
+          <section className="panel settings-card" id="security"><div className="settings-section-title"><span className="settings-section-icon"><KeyRound size={18} /></span><div><h2>Security and integrations</h2><p>Connect application services when the backend is ready.</p></div></div><div className="integration-row"><div className="integration-symbol">API</div><div><strong>Python API</strong><p>Website scanner and audit endpoints</p></div><span className="status-pill status-review">Not connected</span></div><div className="integration-row"><div className="integration-symbol integration-ai">AI</div><div><strong>AI recommendations</strong><p>Optional recommendation provider</p></div><span className="status-pill status-review">Not connected</span></div><div className="integration-row"><div className="integration-symbol integration-search">G</div><div><strong>Search Console</strong><p>Search performance data with user authorization</p></div><span className="status-pill status-review">Planned</span></div></section>
+        </div>
+      </div>
+    </div>
+  );
+}
